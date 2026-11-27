@@ -17,6 +17,7 @@ const assets = new Map([
   ['/', ['index.html', 'text/html; charset=utf-8']],
   ['/index.html', ['index.html', 'text/html; charset=utf-8']],
   ['/style.css', ['style.css', 'text/css; charset=utf-8']],
+  ['/hint-plane.webp', ['hint-plane.webp', 'image/webp']],
   ['/app.js', ['app.js', 'text/javascript; charset=utf-8']],
   ['/catalog.json', ['catalog.json', 'application/json; charset=utf-8']]
 ]);

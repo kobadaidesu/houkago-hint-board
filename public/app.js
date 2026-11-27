@@ -39,8 +39,17 @@ async function request(url, payload) {
 
 const topicFor = id => catalog.find(topic => topic.id === id);
 const hintNames = ['最初の一歩', '考え方', '確かめ方'];
-function subjectTag(name) {
-  return el('span', name, 'tag s' + subjects.indexOf(name));
+const subjectMarks = ['ƒ', 'Aa', '⚛︎', '文', '地', '01'];
+
+function subjectLabel(topic) {
+  const index = subjects.indexOf(topic.subject);
+  const group = el('span', undefined, 'subject');
+  const mark = el('span', subjectMarks[index], 'subject-mark s' + index);
+  mark.setAttribute('aria-hidden', 'true');
+  const labels = el('span', undefined, 'subject-labels');
+  labels.append(el('span', topic.subject, 'subject-name'), el('span', topic.unit, 'unit'));
+  group.append(mark, labels);
+  return group;
 }
 
 function drawFilters() {
@@ -70,13 +79,18 @@ function drawCards() {
     const card = el('button', undefined, 'card');
     card.type = 'button';
     const top = el('span', undefined, 'cardtop');
-    top.append(subjectTag(topic.subject), el('span', topic.unit));
+    top.append(subjectLabel(topic));
     if (row.sample) top.append(el('span', '見本', 'sample'));
     const foot = el('span', undefined, 'cardfoot');
     const count = row.hints.length;
-    const arrow = el('b', '↗');
-    arrow.setAttribute('aria-hidden','true');
-    foot.append(el('i', undefined, count ? 'dot' : 'dot wait'), el('span', count ? 'ヒント ' + count + '件' : 'ヒント待ち'), arrow);
+    const arrow = el('span', undefined, 'card-arrow');
+    arrow.setAttribute('aria-hidden', 'true');
+    arrow.append(el('i', undefined, 'chevron'));
+    const hintState = el('span', undefined, count ? 'hint-state' : 'hint-state waiting');
+    const indicator = el('i', undefined, 'hint-indicator');
+    indicator.setAttribute('aria-hidden', 'true');
+    hintState.append(indicator, el('span', count ? 'ヒント ' + count + '件' : 'ヒント待ち'));
+    foot.append(hintState, arrow);
     card.append(top, el('span', topic.title, 'cardtitle'), foot);
     card.addEventListener('click', () => showPost(row));
     return card;
