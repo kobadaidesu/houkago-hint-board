@@ -1,0 +1,8 @@
+.local-data/
+node_modules/
+.env
+.env.*
+*.publishsettings
+*.PublishSettings
+*.pubxml*
+*.zip
